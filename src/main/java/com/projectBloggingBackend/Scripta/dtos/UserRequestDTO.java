@@ -1,5 +1,6 @@
 package com.projectBloggingBackend.Scripta.dtos;
 
+import com.projectBloggingBackend.Scripta.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
