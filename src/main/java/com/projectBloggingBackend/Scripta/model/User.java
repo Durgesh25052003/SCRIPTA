@@ -52,6 +52,10 @@ public class User {
         return roles;
     }
 
+    public Long getUserID() {
+        return userID;
+    }
+
     public String getUserName() {
         return userName;
     }

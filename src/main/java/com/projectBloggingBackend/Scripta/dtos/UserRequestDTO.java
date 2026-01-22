@@ -48,4 +48,5 @@ public class UserRequestDTO {
     public String getUserName() {
         return userName;
     }
+
 }
