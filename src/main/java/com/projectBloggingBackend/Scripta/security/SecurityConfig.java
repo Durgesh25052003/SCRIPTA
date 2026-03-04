@@ -18,19 +18,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
+    private final RateLimiter rateLimiter;
 
-    public SecurityConfig(JWTFilter jwtFilter){
+    public SecurityConfig(JWTFilter jwtFilter,RateLimiter rateLimiter){
         this.jwtFilter=jwtFilter;
+        this.rateLimiter=rateLimiter;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
 
-        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers("/api/scripta/auth/**").permitAll()
-                .requestMatchers("/api/scripta/test/**").hasAnyRole("ADMIN","USER").requestMatchers("/api/scripta/post").hasAnyRole("ADMIN","USER").requestMatchers("/api/scripta/comment").hasAnyRole("ADMIN","USER").anyRequest().authenticated()
-        ) .addFilterBefore(
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/scripta/auth/**").permitAll()
+                .requestMatchers("/api/v1/scripta/test/**").hasAnyRole("ADMIN","USER").requestMatchers("/api/v1/scripta/post").hasAnyRole("ADMIN","USER").requestMatchers("/api/v1/scripta/comment").hasAnyRole("ADMIN","USER").requestMatchers("/api/v1/scripta/like").hasAnyRole("USER","ADMIN").requestMatchers("/api/v1/scripta/feed").hasAnyRole("ADMIN","USER").requestMatchers("/api/v1/scripta/like").hasAnyRole("USER","ADMIN").anyRequest().authenticated()
+        ).addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class
+        ).addFilterAfter(
+                rateLimiter,JWTFilter.class
         );
 
         return http.build();

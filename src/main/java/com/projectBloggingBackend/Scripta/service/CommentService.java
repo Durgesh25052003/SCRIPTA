@@ -3,6 +3,7 @@ package com.projectBloggingBackend.Scripta.service;
 import com.projectBloggingBackend.Scripta.dtos.CommentRequestDTO;
 import com.projectBloggingBackend.Scripta.dtos.CommentResponseDTO;
 import com.projectBloggingBackend.Scripta.exception.ForbiddenAccess;
+import com.projectBloggingBackend.Scripta.exception.UserNotFound;
 import com.projectBloggingBackend.Scripta.model.Comment;
 import com.projectBloggingBackend.Scripta.model.Post;
 import com.projectBloggingBackend.Scripta.model.User;
@@ -49,7 +50,7 @@ public class CommentService {
        //Fetching User
        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
        String email=authentication.getName();
-       User user=scriptaUserRepo.findByEmail(email);
+       User user=scriptaUserRepo.findByEmail(email).orElseThrow(()->new UserNotFound("User not Found..."));
        Comment comment=new Comment();
        comment.setAuthor(user);
        comment.setContent(commentRequestDTO.getContent());
@@ -67,7 +68,7 @@ public class CommentService {
         Comment comment = scriptaCommentRepo.findById(id).orElseThrow(()->new RuntimeException("Comment Doesn't Exists..."));
        //Getting authenticated User
        String email=SecurityContextHolder.getContext().getAuthentication().getName();
-       User isUser=scriptaUserRepo.findByEmail(email);
+       User isUser=scriptaUserRepo.findByEmail(email).orElseThrow(()->new UserNotFound("User not Found.."));
        if(comment.getAuthor().getUserID()!=isUser.getUserID()){
            throw new ForbiddenAccess("Forbidden Access...");
        }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/scripta/comment")
+@RequestMapping("/api/v1/scripta/comment")
 public class ScriptaCommentController {
     private final CommentService commentService;
 

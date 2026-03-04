@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/scripta/post")
+@RequestMapping("/api/v1/scripta/post")
 public class ScriptaPostController {
 
 
@@ -28,8 +28,12 @@ public class ScriptaPostController {
         return postService.getAllPost();
     }
 
+    @GetMapping("/{id}")
+    public PostResponseDTO getPostById(@PathVariable Long id){
+        return postService.getPostById(id);
+    }
     @PostMapping("/createPost")
-    public PostResponseDTO createPost(@Validated @RequestBody PostRequestDTO postRequestDTO){
+    public ResponseEntity<PostResponseDTO> createPost(@Validated @RequestBody PostRequestDTO postRequestDTO){
         return postService.createPost(postRequestDTO);
     }
     @PutMapping("/updatePost/{id}")

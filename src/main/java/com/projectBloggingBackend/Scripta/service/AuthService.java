@@ -3,6 +3,7 @@ package com.projectBloggingBackend.Scripta.service;
 import com.projectBloggingBackend.Scripta.dtos.LoginDTO;
 import com.projectBloggingBackend.Scripta.dtos.UserRequestDTO;
 import com.projectBloggingBackend.Scripta.dtos.UserResponseDTO;
+import com.projectBloggingBackend.Scripta.exception.UserNotFound;
 import com.projectBloggingBackend.Scripta.jwt.JWTUtil;
 import com.projectBloggingBackend.Scripta.model.Role;
 import com.projectBloggingBackend.Scripta.model.User;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -21,15 +24,18 @@ public class AuthService {
     private final ScriptaUserRepo userRepo;
     private final ScriptaRoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
+    private Logger logger=LoggerFactory.getLogger(PostService.class);
+//    private final UserService userService;
+    private final ScriptaUserRepo scriptaUserRepo;
     private final JWTUtil jwtUtil;
     Map<String,String> message=new HashMap<>();
-    public AuthService(ScriptaUserRepo userRepo,ScriptaRoleRepo roleRepo,PasswordEncoder passwordEncoder,UserService userService,JWTUtil jwtUtil){
+    public AuthService(ScriptaUserRepo userRepo,ScriptaRoleRepo roleRepo,PasswordEncoder passwordEncoder,JWTUtil jwtUtil,ScriptaUserRepo scriptaUserRepo){
         this.userRepo=userRepo;
         this.roleRepo=roleRepo;
         this.passwordEncoder=passwordEncoder;
-        this.userService=userService;
+//        this.userService=userService;
         this.jwtUtil=jwtUtil;
+        this.scriptaUserRepo=scriptaUserRepo;
     }
 
     //RESISTER
@@ -44,10 +50,8 @@ public class AuthService {
     public ResponseEntity<Map<String,String>> Login(LoginDTO userRequesteDTO) throws Exception {
         //Error Logic is still pending
         System.out.println("✨✨✨");
-       User user=userService.getUserByEmail(userRequesteDTO.getEmail());
-      if(user==null){
-          throw new Exception("User not Found");
-      }
+       User user=scriptaUserRepo.findByEmail(userRequesteDTO.getEmail()).orElseThrow(()-> new UserNotFound("User Not Found..."));
+
       Boolean isPresent=passwordEncoder.matches(userRequesteDTO.getPassword(), user.getPassword());
       List<String>roles= user.getRoles().stream().map(role->role.getRoleName()).toList();
       Map<String, Object>Claims=new HashMap<>();

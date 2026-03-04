@@ -3,7 +3,7 @@ package com.projectBloggingBackend.Scripta.dtos;
 import java.time.LocalDateTime;
 
 public class PostResponseDTO {
-    private Long id;
+    private Long postId;
     private String title;
     private String content;
     private String authorUsername;
@@ -11,10 +11,10 @@ public class PostResponseDTO {
 
     public PostResponseDTO(){};
 
-    public PostResponseDTO(int postId,String title,String content,String authorUsername,LocalDateTime createdAt){
+    public PostResponseDTO(Long postId,String title,String content,String authorUsername,LocalDateTime createdAt){
         this.authorUsername=authorUsername;
         this.content=content;
-        this.id=id;
+        this.postId=postId;
         this.title=title;
         this.createdAt=createdAt;
     }
@@ -31,8 +31,8 @@ public class PostResponseDTO {
         this.authorUsername = authorUsername;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -51,8 +51,8 @@ public class PostResponseDTO {
         return authorUsername;
     }
 
-    public Long getId() {
-        return id;
+    public Long getPostId() {
+        return postId;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {

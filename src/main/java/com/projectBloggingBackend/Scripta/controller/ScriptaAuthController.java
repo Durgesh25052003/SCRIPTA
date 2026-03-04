@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/scripta/auth")
+@RequestMapping("/api/v1/scripta/auth")
 public class ScriptaAuthController {
     private final AuthService authService;
     public ScriptaAuthController(AuthService authService){

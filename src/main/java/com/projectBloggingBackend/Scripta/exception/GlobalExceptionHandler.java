@@ -25,6 +25,10 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ForbiddenAccess.class)
     public ResponseEntity<String>HandleForbiddenAccess(ForbiddenAccess forbiddenAccess){
-        return new ResponseEntity<>(forbiddenAccess.getMessage(),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(forbiddenAccess.getMessage(),HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(ResourceNotFound.class)
+    public ResponseEntity<String>ResourceNotFound(ResourceNotFound resourceNotFound){
+        return new ResponseEntity<>(resourceNotFound.getMessage(),HttpStatus.NOT_FOUND);
     }
 }

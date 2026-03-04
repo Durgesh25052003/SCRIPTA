@@ -35,6 +35,10 @@ public class Post {
          this.content=content;
     }
 
+    public void setPostId(long postId) {
+        this.postId = postId;
+    }
+
     public String getTitle() {
         return title;
     }

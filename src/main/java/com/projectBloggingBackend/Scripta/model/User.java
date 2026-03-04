@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +31,10 @@ public class User {
         this.email=email;
         this.password=password;
         this.roles=roles;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public void setRoles(Set<Role> roles) {
